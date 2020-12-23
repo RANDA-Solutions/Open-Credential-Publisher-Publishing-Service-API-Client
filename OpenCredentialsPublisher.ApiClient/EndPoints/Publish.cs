@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace OpenCredentialsPublisher.ApiClient.EndPoints
 {
+    [Serializable]
     public class Publish
     {
         #region Statics

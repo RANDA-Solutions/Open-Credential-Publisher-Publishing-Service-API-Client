@@ -24,5 +24,12 @@ namespace OpenCredentialsPublisher.ApiClient.EndPoints.Tests
 
             Assert.IsTrue(countdown > 0);
         }
+
+        [TestMethod()]
+        public void RevokeTest() {
+            string requestId = "a8ddf491-f8ad-43b5-9cec-f6cf27907cee";
+
+            var r = ApiClient.Tests.ApiTestHelper.Revoke(requestId);
+        }
     }
 }

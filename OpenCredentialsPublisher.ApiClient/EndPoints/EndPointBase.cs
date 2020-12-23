@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace OpenCredentialsPublisher.ApiClient.EndPoints
         #region Statics
         public static async Task<T> ConnectJson<T>(string EndPoint, object RequestVM, string BearerToken = null) where T : new() => await ConnectJson<T>(EndPoint, JsonConvert.SerializeObject(RequestVM), BearerToken);
         public static async Task<T> ConnectJson<T>(string EndPoint, string RequestJson, string BearerToken = null) where T : new() {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             var c = new HttpClient() {
                 BaseAddress = Runtime.ApiBaseUri
             };
@@ -68,6 +70,26 @@ namespace OpenCredentialsPublisher.ApiClient.EndPoints
             }
 
             var result = await c.GetAsync($"{EndPoint}{RouteValues}");
+
+            if (result.IsSuccessStatusCode) {
+                string data = await result.Content.ReadAsStringAsync();
+                T vm = JsonConvert.DeserializeObject<T>(data);
+                return vm;
+            } else {
+                throw new Exception($"Unable to connect. {result.StatusCode}: {result.ReasonPhrase}");
+            }
+        }
+
+        public static async Task<T> ConnectDelete<T>(string EndPoint, string RouteValues, string BearerToken = null) where T : new() {
+            var c = new HttpClient() {
+                BaseAddress = Runtime.ApiBaseUri
+            };
+
+            if (!String.IsNullOrEmpty(BearerToken)) {
+                c.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", BearerToken);
+            }
+
+            var result = await c.DeleteAsync($"{EndPoint}{RouteValues}");
 
             if (result.IsSuccessStatusCode) {
                 string data = await result.Content.ReadAsStringAsync();

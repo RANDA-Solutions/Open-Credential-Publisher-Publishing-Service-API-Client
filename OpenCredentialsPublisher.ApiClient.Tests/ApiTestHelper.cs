@@ -48,5 +48,15 @@ namespace OpenCredentialsPublisher.ApiClient.Tests
 
             return Publish.PublishClr(t.AccessToken, identity, jsonClr).Result;
         }
+
+        public static Credentials GetCredentials(string AccessKey) {
+            var t = GetToken();
+            return Credentials.GetCredentials(AccessKey, t.AccessToken).Result;
+        }
+
+        public static Requests Revoke(string RequestId) {
+            var t = GetToken();
+            return Requests.RevokeRequest(RequestId, t.AccessToken).Result;
+        }
     }
 }
