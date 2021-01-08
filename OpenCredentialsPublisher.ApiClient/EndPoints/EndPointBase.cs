@@ -11,9 +11,12 @@ namespace OpenCredentialsPublisher.ApiClient.EndPoints
     static class EndPointBase
     {
         #region Statics
+        static EndPointBase() {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        }
+
         public static async Task<T> ConnectJson<T>(string EndPoint, object RequestVM, string BearerToken = null) where T : new() => await ConnectJson<T>(EndPoint, JsonConvert.SerializeObject(RequestVM), BearerToken);
         public static async Task<T> ConnectJson<T>(string EndPoint, string RequestJson, string BearerToken = null) where T : new() {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             var c = new HttpClient() {
                 BaseAddress = Runtime.ApiBaseUri
             };

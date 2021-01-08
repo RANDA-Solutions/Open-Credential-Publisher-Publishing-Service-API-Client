@@ -27,9 +27,9 @@ namespace OpenCredentialsPublisher.ApiClient.EndPoints.Tests
 
         [TestMethod()]
         public void RevokeTest() {
-            string requestId = "a8ddf491-f8ad-43b5-9cec-f6cf27907cee";
+            var pubResult = ApiClient.Tests.ApiTestHelper.GetPublish();
 
-            var r = ApiClient.Tests.ApiTestHelper.Revoke(requestId);
+            var r = ApiClient.Tests.ApiTestHelper.Revoke(pubResult.RequestId);
         }
     }
 }

@@ -1,0 +1,11 @@
+{
+    "client_id": "2faa5b5d-24a1-4459-be35-4532f36da29a",
+    "client_secret": "pPzQVS8tk0x5tMLDHCa9Ng79fGYaGUc5WJ2TyZVw",
+    "client_id_issued_at": 1610044406,
+    "client_secret_expires_at": 0,
+    "client_name": "ocp api client",
+    "client_uri": "https://localhost/ocpclient",
+    "token_endpoint_auth_method": "client_secret_basic",
+    "scope": "ocp-publisher",
+    "grant_types": [ "client_credentials", "refresh_token" ]
+}

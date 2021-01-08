@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using OpenCredentialsPublisher.ApiClient.EndPoints;
 
 namespace OpenCredentialsPublisher.ApiClient.Tests
@@ -18,11 +19,18 @@ namespace OpenCredentialsPublisher.ApiClient.Tests
         static Publish PublishData { get; set; }
 
         public static Register GetRegistration() {
-            string clientName = "ocp api client";
-            string clientUri = "https://localhost/ocpclient";
 
             if (RegisterData == null) {
-                RegisterData = Register.RegisterClient(clientName, clientUri).Result;
+                //string clientName = "ocp api client";
+                //string clientUri = "https://localhost/ocpclient";
+                //RegisterData = Register.RegisterClient(clientName, clientUri).Result;
+
+                string filename = typeof(ApiTestHelper).Assembly.GetManifestResourceNames().Single(s => s.EndsWith("ocp api registration.json"));
+                string regClr;
+                using (var sr = new System.IO.StreamReader(typeof(ApiTestHelper).Assembly.GetManifestResourceStream(filename))) {
+                    regClr = sr.ReadToEnd();
+                }
+                RegisterData = JsonConvert.DeserializeObject<Register>(regClr);
             }
 
             return RegisterData;
@@ -49,10 +57,10 @@ namespace OpenCredentialsPublisher.ApiClient.Tests
             return Publish.PublishClr(t.AccessToken, identity, jsonClr).Result;
         }
 
-        public static Credentials GetCredentials(string AccessKey) {
-            var t = GetToken();
-            return Credentials.GetCredentials(AccessKey, t.AccessToken).Result;
-        }
+        //public static Credentials GetCredentials(string AccessKey) {
+        //    var t = GetToken();
+        //    return Credentials.GetCredentials(AccessKey, t.AccessToken).Result;
+        //}
 
         public static Requests Revoke(string RequestId) {
             var t = GetToken();
